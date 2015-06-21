@@ -82,6 +82,9 @@ app.get('/tours/request-group-rate', function(req, res) {
 app.get('/tours/oregon-coast', function(req, res) {
 	res.render('tours/oregon-coast');
 });
+app.get('/jquery-test', function(req, res){
+	res.render('jquery-test');
+});
 
 // 404 catch-all handler (middleware)
 app.use(function(req, res, next) {
