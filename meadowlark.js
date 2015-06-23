@@ -21,6 +21,7 @@ app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 
 app.set('port', process.env.PORT || 3000);
+
 app.use(require('cookie-parser')(credentials.cookieSecret));
 app.use(require('express-session')());
 app.use(express.static(__dirname + '/public'));
@@ -88,14 +89,8 @@ app.get('/about', function(req, res) {
 
 	});
 });
-app.get('/tours/hood-river', function(req, res) {
-	res.render('tours/hood-river');
-});
 app.get('/tours/request-group-rate', function(req, res) {
 	res.render('tours/request-group-rate');
-});
-app.get('/tours/oregon-coast', function(req, res) {
-	res.render('tours/oregon-coast');
 });
 app.get('/jquery-test', function(req, res) {
 	res.render('jquery-test');
@@ -124,6 +119,69 @@ function NewsletterSignup() {
 
 NewsletterSignup.prototype.save = function(cb) {
 	cb();
+};
+
+// moking product database
+function Product() {
+}
+
+Product.find = function(conditions, fields, options, cb) {
+	if (typeof conditions === 'function') {
+		cb = conditions;
+		conditions = {};
+		fields = null;
+		options = {};
+	} else if (typeof fields === 'function') {
+		cb = fields;
+		fields = null;
+		options = {};
+	} else if (typeof options === 'function') {
+		cb = options;
+		options = {};
+	}
+	var products = [
+		{
+			name: 'Hood River Tour',
+			slug: 'hood-river',
+			category: 'tour',
+			sku: 723,
+		},
+		{
+			name: 'Oregon Coast Tour',
+			slug: 'oregon-coast',
+			category: 'tour',
+			sku: 446,
+		},
+		{
+			name: 'Rock Climbing in Bend',
+			slug: 'rock-climbing/bend',
+			category: 'adventure',
+			sku: 944,
+		}
+	];
+	cb(null, products.filter(function(p) {
+		if(conditions.category && p.category!==conditions.category) return false;
+		if(conditions.slug && p.slug!==conditions.slug) return false;
+		return true;
+	}));
+};
+Product.findOne = function(conditions, fields, options, cb){
+	if(typeof conditions==='function') {
+		cb = conditions;
+		conditions = {};
+		fields = null;
+		options = {};
+	} else if(typeof fields==='function') {
+		cb = fields;
+		fields = null;
+		options = {};
+	} else if(typeof options==='function') {
+		cb = options;
+		options = {};
+	}
+	Product.find(conditions, fields, options, function(err, products){
+		cb(err, products && products.length ? products[0] : null);
+	});
 };
 
 var VALID_EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
@@ -178,6 +236,21 @@ app.post('/contest/vacation-photo/:year/:month', function(req, res) {
 		console.log('received fields:');
 		console.log(fields);
 		res.redirect(303, '/thank-you');
+	});
+});
+app.get('/tours/:tour', function(req, res, next){
+	Product.findOne({ category: 'tour', slug: req.params.tour }, function(err, tour){
+		console.log(tour);
+		if(err) return next(err);
+		if(!tour) return next();
+		res.render('tour', { tour: tour });
+	});
+});
+app.get('/adventures/:subcat/:name', function(req, res, next){
+	Product.findOne({ category: 'adventure', slug: req.params.subcat + '/' + req.params.name  }, function(err, adventure){
+		if(err) return next(err);
+		if(!adventure) return next();
+		res.render('adventure', { adventure: adventure });
 	});
 });
 
