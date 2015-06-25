@@ -305,9 +305,10 @@ app.post('/cart/checkout', function(req,res) {
 		from: '"Meadowlark Travel" <info@meadowlark.com>',
 		to: email,
 		subject: 'Your Meadowlark Travel Tour',
-		text: 'Thank you for booking trip with Meadowlark Travel.  ' +
-			'We look forward to your visit!',
-	}, function(err) {
+		html: '<h1>Meadowlark Travel</h1>\n<p>Thanks for booking your trip with ' +
+			'Meadowlark Travel. <b>We look forward to your visit!</b>',
+		generateTextFromHtml: true,
+}, function(err) {
 		if(err) console.error( 'Unable to send email: ' + error); 
 	});
 	res.redirect(303, '/');
