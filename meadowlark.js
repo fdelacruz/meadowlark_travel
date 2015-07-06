@@ -80,7 +80,6 @@ switch(app.get('env')) {
 		// module 'express-logger' supports daily log ratation
 		app.use(require('express-logger')({ path: __dirname + '/log/requests.log' }));
 		break;
-	
 }
 
 app.use(require('cookie-parser')(credentials.cookieSecret));
