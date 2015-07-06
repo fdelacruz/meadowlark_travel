@@ -49,16 +49,16 @@ app.use(function(req, res, next){
             try {
                 // attempt to use Express error route
                 next(err);
-            } catch(err){
+            } catch(error){
                 // if Express error route failed, try
                 // plain Node response
-                console.error('Express error mechanism failed.\n', err.stack);
+                console.error('Express error mechanism failed.\n', error.stack);
                 res.statusCode = 500;
                 res.setHeader('content-type', 'text/plain');
                 res.end('Server error.');
             }
-        } catch(err){
-            console.error('Unable to send 500 response.\n', err.stack);
+        } catch(error){
+            console.error('Unable to send 500 response.\n', error.stack);
         }
     });
 
