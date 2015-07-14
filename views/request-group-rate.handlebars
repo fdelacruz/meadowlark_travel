@@ -1,5 +1,6 @@
 <h1>Request Group Rate</h1>
-<form>
+
+<form class="form-horizontal" role="form">
 	<input type="hidden" name="referrer">
 	<div class="form-group">
 		<label for="fieldName" class="col-sm-2 control-label">Name</label>
@@ -25,8 +26,12 @@
 		</div>
 	</div>
 </form>
+
+{{#section 'jquery'}}
 <script>
-  $(document).ready(function() {
-    $('input[name="referrer"]').val(document.referrer);
-  });
+	$(document).ready(function(){
+		$('input[name="referrer"]').val(document.referrer);
+	});
 </script>
+{{/section}}
+
