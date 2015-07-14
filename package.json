@@ -18,7 +18,8 @@
     "nodemailer": "~0.6.5",
     "express-logger": "0.0.3",
     "morgan": "~1.1.1",
-    "loadtest": "~0.2.11"
+    "loadtest": "~0.2.11",
+    "mongoose": "^3.8.12"
   },
   "devDependencies": {
     "chai": "^1.9.1",
