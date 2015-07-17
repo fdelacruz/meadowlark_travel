@@ -16,6 +16,7 @@
     "express3-handlebars": "^0.5.2",
     "formidable": "^1.0.17",
     "nodemailer": "~0.6.5",
+    "session-mongoose": "^0.4.1",
     "express-logger": "0.0.3",
     "morgan": "~1.1.1",
     "loadtest": "~0.2.11",
@@ -23,6 +24,7 @@
   },
   "devDependencies": {
     "chai": "^1.9.1",
+    "connect": "^2.19.5",
     "grunt": "^0.4.5",
     "grunt-cafe-mocha": "^0.1.13",
     "grunt-contrib-jshint": "^0.11.2",
