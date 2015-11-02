@@ -21,6 +21,9 @@ var handlebars = require('express3-handlebars').create({
 			if(!this._sections) this._sections = {};
 			this._sections[name] = options.fn(this);
 			return null;
+		},
+		static: function (name) {
+			return require('./lib/static.js').map(name);
 		}
 	}
 });
@@ -295,21 +298,9 @@ apiOptions.domain.on('error', function(err){
 });
 
 // link API into pipeline
-app.use('api.*', rest.rester(apiOptions));
+// currently commented out to reduce console noise
+// app.use('api.*', rest.rester(apiOptions));
 
-apiOptions.domain.on('error', function(err){
-    console.log('API domain error.\n', err.stack);
-    setTimeout(function(){
-        console.log('Server shutting down after API domain error.');
-        process.exit(1);
-    }, 5000);
-    server.close();
-    var worker = require('cluster').worker;
-    if(worker) worker.disconnect();
-});
-
-// link API into pipeline
-app.use(rest.rester(apiOptions));
 
 // add support for auto views
 var autoViews = {};
