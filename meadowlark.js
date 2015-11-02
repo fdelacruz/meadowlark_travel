@@ -3,6 +3,7 @@ var http = require('http'),
 	fortune = require('./lib/fortune.js'),
 	formidable = require('formidable'),
 	fs = require('fs'),
+	vhost = require('vhost'),
 	Vacation = require('./models/vacation.js'),
 	VacationInSeasonListener = require('./models/vacationInSeasonListener.js');
 
@@ -233,7 +234,6 @@ require('./routes.js')(app);
 var Attraction = require('./models/attraction.js');
 
 var rest = require('connect-rest');
-app.use('/api', require('cors')());
 
 rest.get('/attractions', function(req, content, cb){
     Attraction.find({ approved: true }, function(err, attractions){
@@ -279,7 +279,7 @@ rest.get('/attraction/:id', function(req, content, cb){
 
 // API configuration
 var apiOptions = {
-    context: '/api',
+    context: '/',
     domain: require('domain').create(),
 };
 
@@ -295,7 +295,7 @@ apiOptions.domain.on('error', function(err){
 });
 
 // link API into pipeline
-app.use(rest.rester(apiOptions));
+app.use('api.*', rest.rester(apiOptions));
 
 apiOptions.domain.on('error', function(err){
     console.log('API domain error.\n', err.stack);
